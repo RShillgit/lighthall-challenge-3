@@ -11,6 +11,17 @@ body {
     background-color: #FCE5CD;
 }
 
+/* VS Computer Page Quit */
+.computerGameQuit {
+    display: flex;
+    justify-content: center;
+    margin: 1rem;
+}
+.computerGameQuit button {
+    font-size: 1em;
+    padding: 8px;
+}
+
 /* Start Menu */
 .startMenu-container {
     position: absolute;
@@ -131,6 +142,7 @@ body {
 .gameOverForm input {
     width: 100%;
     font-size: 1em;
+    padding: 8px;
 }
 .gameOverForm button {
     font-size: 1em;

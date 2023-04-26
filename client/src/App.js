@@ -1,5 +1,5 @@
 import './App.css';
-import {useEffect, useState} from 'react'
+import {useEffect, useRef, useState} from 'react'
 import randomWords from 'random-words';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -18,9 +18,16 @@ function App() {
 
   const [loserScreen, setLoserScreen] = useState();
   const [winnerScreen, setWinnerScreen] = useState();
+
+  const nameInput = useRef();
+
+  const gamesWon = useRef();
   
   // On mount 
   useEffect(() => {
+
+    // Set games won to zero
+    gamesWon.current = 0;
 
     // Render start menu display
     setStartMenu(
@@ -50,13 +57,19 @@ function App() {
 
       // If the gameWord and correctGuesses are the same, the user has WON
       if(gameWordNoDuplicates.sort().join(',') === correctGuessesNoDuplicates.sort().join(',')) {
+
+        // Incriment number of games won
+        gamesWon.current += 1;
+        console.log("Games Won:", gamesWon.current)
+
+        // Display winner screen
         setWinnerScreen(
           <div className='winnerScreenContainer'>
             <div className='overlayContent'>
               <h1>You Won!</h1>
               <div className='winnerButtons'>
-                <button>Continue</button>
-                <button>Quit</button>
+                <button onClick={continueGame}>Continue</button>
+                <button onClick={quitGame}>Quit</button>
               </div>
             </div>
           </div>
@@ -70,17 +83,7 @@ function App() {
 
     // If there are no more guesses remaining, the user has LOST
     if (guessesRemaining === 0) {
-      setLoserScreen(
-        <div className='loserScreenContainer'>
-          <div className='overlayContent'>
-            <h1>Game Over!</h1>
-            <form className='gameOverForm'>
-              <input type="text" placeholder='Your Name'/>
-              <button>Submit</button>
-            </form>
-          </div>
-        </div>
-      )
+      setLoserScreen(gameOverDisplay);
     }
 
   }, [guessesRemaining])
@@ -140,6 +143,35 @@ function App() {
     setTotalGuesses(totalGuesses + 1);
   }
 
+  // Handles game over form submit
+  const gameOverFormSubmit = (e) => {
+    e.preventDefault();
+
+    console.log("User's Name", nameInput.current)
+    console.log("Games Won:", gamesWon.current)
+  }
+
+  // Continue game button click
+  const continueGame = () => {
+
+    // Remove winner screen
+    setWinnerScreen();
+
+    // Reset all variables
+    setTotalGuesses(0);
+    setCorrectGuesses([]);
+    setGuessesRemaining(8);
+    
+    // Run play against computer function to create new word
+    playAgainstComputer();
+  }
+
+  // Quit game button click
+  const quitGame = () => {
+    setWinnerScreen();
+    setLoserScreen(gameOverDisplay);
+  }
+
   // Rendered Word Display
   const renderedGameWord = (
     <>
@@ -160,6 +192,19 @@ function App() {
         :<></>
       }
     </>
+  )
+
+  // Game over screen
+  const gameOverDisplay = (
+    <div className='loserScreenContainer'>
+      <div className='overlayContent'>
+        <h1>Game Over!</h1>
+        <form onSubmit={gameOverFormSubmit} className='gameOverForm'>
+          <input type="text" placeholder='Your Name' onChange={(e) => nameInput.current = e.target.value} required={true}/>
+          <button>Submit</button>
+        </form>
+      </div>
+    </div>
   )
 
   return (
@@ -186,6 +231,10 @@ function App() {
             <button key={key} onClick={() => letterGuess(key)}>{key}</button>
           )
         })}
+      </div>
+
+      <div className='computerGameQuit'>
+        <button onClick={quitGame}>Quit</button>
       </div>
     </div>
   );

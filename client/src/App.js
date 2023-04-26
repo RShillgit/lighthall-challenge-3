@@ -52,7 +52,13 @@ function App() {
       if(gameWordNoDuplicates.sort().join(',') === correctGuessesNoDuplicates.sort().join(',')) {
         setWinnerScreen(
           <div className='winnerScreenContainer'>
-            <h1>You Won!</h1>
+            <div className='overlayContent'>
+              <h1>You Won!</h1>
+              <div className='winnerButtons'>
+                <button>Continue</button>
+                <button>Quit</button>
+              </div>
+            </div>
           </div>
         )
       }
@@ -66,7 +72,13 @@ function App() {
     if (guessesRemaining === 0) {
       setLoserScreen(
         <div className='loserScreenContainer'>
-          <h1>You Lost!</h1>
+          <div className='overlayContent'>
+            <h1>Game Over!</h1>
+            <form className='gameOverForm'>
+              <input type="text" placeholder='Your Name'/>
+              <button>Submit</button>
+            </form>
+          </div>
         </div>
       )
     }
@@ -119,7 +131,7 @@ function App() {
         correctGuess = true;
       }
     }
-    // No match, increase incorrect guesses count and check if user lost
+    // No match, decrease incorrect guesses count
     if(!correctGuess) {
       setGuessesRemaining(guessesRemaining - 1);
     }

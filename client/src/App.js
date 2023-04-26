@@ -14,7 +14,10 @@ function App() {
 
   const [totalGuesses, setTotalGuesses] = useState(0);
   const [correctGuesses, setCorrectGuesses] = useState([]);
-  const [incorrectGuesses, setIncorrectGuesses] = useState(0);
+  const [guessesRemaining, setGuessesRemaining] = useState(8);
+
+  const [loserScreen, setLoserScreen] = useState();
+  const [winnerScreen, setWinnerScreen] = useState();
   
   // On mount 
   useEffect(() => {
@@ -35,6 +38,40 @@ function App() {
   useEffect(() => {
     setGameWordDisplay(renderedGameWord);
   }, [gameWord, totalGuesses])
+
+  // Anytime the correct guesses change see if the user WON
+  useEffect(() => {
+
+    if (correctGuesses.length > 0 && gameWord) {
+
+      // Remove diplicate letters from gameWord and correctGuesses arrays
+      const gameWordNoDuplicates = [...new Set(gameWord)];
+      const correctGuessesNoDuplicates = [...new Set(correctGuesses)];
+
+      // If the gameWord and correctGuesses are the same, the user has WON
+      if(gameWordNoDuplicates.sort().join(',') === correctGuessesNoDuplicates.sort().join(',')) {
+        setWinnerScreen(
+          <div className='winnerScreenContainer'>
+            <h1>You Won!</h1>
+          </div>
+        )
+      }
+    }
+  }, [correctGuesses])
+
+  // Anytime guesses remaining changes, check if user LOST
+  useEffect(() => {
+
+    // If there are no more guesses remaining, the user has LOST
+    if (guessesRemaining === 0) {
+      setLoserScreen(
+        <div className='loserScreenContainer'>
+          <h1>You Lost!</h1>
+        </div>
+      )
+    }
+
+  }, [guessesRemaining])
 
   // Run game vs computer
   const playAgainstComputer = () => {
@@ -78,13 +115,13 @@ function App() {
         correctGuessesCopy.push(letter);
         setCorrectGuesses(correctGuessesCopy);
 
-        // Set correctGuess variable to true
+        // Set correctGuess variable to true so we bypass the incorrect guesses
         correctGuess = true;
       }
     }
-    // No match, increase incorrect guesses count
+    // No match, increase incorrect guesses count and check if user lost
     if(!correctGuess) {
-      setIncorrectGuesses(incorrectGuesses + 1);
+      setGuessesRemaining(guessesRemaining - 1);
     }
 
     // Incriment total guesses
@@ -117,12 +154,14 @@ function App() {
     <div className="App">
 
       {startMenu /* Overlay that will give options for playing against computer or player */}
+      {winnerScreen /* Overlay for winner */}
+      {loserScreen /* Overlay for loser */}
 
       <h1>Hangman</h1>
       <div className="gallowsContainer"></div>
       
       <div>
-        <p>Incorrect Guesses: {incorrectGuesses}</p>
+        <p>Guesses Remaining: {guessesRemaining}</p>
       </div>
 
       <div className="gameWordContainer">

@@ -149,7 +149,7 @@ function App() {
     setTotalGuesses(totalGuesses + 1);
 
     // Update the hangman image based on the remaining guesses
-    const currentImageIndex = Math.max(0, hangmanImages.length - guessesRemaining - 1);
+    const currentImageIndex = Math.max(0, hangmanImages.length - guessesRemaining);
     setHangmanImage(hangmanImages[currentImageIndex]);
   }
 

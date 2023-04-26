@@ -80,3 +80,18 @@ body {
     background-color: lightgrey;
     cursor: pointer;
 }
+
+/* Game Word */
+.gameWordContainer {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+.gameWord-character {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    width: 50px;
+    border-bottom: 2px solid black;
+}

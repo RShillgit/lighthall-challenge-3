@@ -130,9 +130,14 @@ function App() {
 
 
   // Handles each guess
+
+
   const letterGuess = (letter) => {
     let correctGuess = false;
-
+    
+    const letterClicked = document.getElementById(letter)
+    letterClicked.disabled = true;
+    
     for(let i = 0; i < gameWord.length; i++) {
       if (gameWord[i] === letter) {
         const correctGuessesCopy = [...correctGuesses];
@@ -242,7 +247,7 @@ function App() {
       <div className='keyboardContainer'>
         {KEYS.map(key => {
           return (
-            <button key={key} onClick={() => letterGuess(key)}>{key}</button>
+            <button id={key} key={key} onClick={() => letterGuess(key)}>{key}</button>
           )
         })}
       </div>

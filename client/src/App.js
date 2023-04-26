@@ -149,7 +149,7 @@ function App() {
     setTotalGuesses(totalGuesses + 1);
 
     // Update the hangman image based on the remaining guesses
-    const currentImageIndex = Math.max(0, hangmanImages.length - guessesRemaining - 1);
+    const currentImageIndex = Math.max(0, hangmanImages.length - guessesRemaining);
     setHangmanImage(hangmanImages[currentImageIndex]);
   }
 
@@ -219,33 +219,36 @@ function App() {
   )
 
   return (
-  <div className="App">
-    {startMenu}
-    {winnerScreen}
-    {loserScreen}
-    <h1>Hangman</h1>
-    <div className="gallowsContainer">
-      <img src={hangmanImage} alt="hangman" />
-    </div>
-    <div>
-      <p>Guesses Remaining: {guessesRemaining}</p>
-    </div>
-    <div className="gameWordContainer">{gameWordDisplay}</div>
-    <div className="keyboardContainer">
-      {KEYS.map((key) => {
-        return (
-          <button key={key} onClick={() => letterGuess(key)}>
-            {key}
-          </button>
-        );
-      })}
-    </div>
-    <div className="computerGameQuit">
-      <button onClick={quitGame}>Quit</button>
-    </div>
-  </div>
-);
+    <div className="App">
 
+      {startMenu /* Overlay that will give options for playing against computer or player */}
+      {winnerScreen /* Overlay for winner */}
+      {loserScreen /* Overlay for loser */}
+
+      <h1>Hangman</h1>
+      <div className="gallowsContainer"></div>
+        <img src={hangmanImage} alt="hangman" />
+      <div>
+        <p>Guesses Remaining: {guessesRemaining}</p>
+      </div>
+
+      <div className="gameWordContainer">
+        {gameWordDisplay}
+      </div>
+      
+      <div className='keyboardContainer'>
+        {KEYS.map(key => {
+          return (
+            <button key={key} onClick={() => letterGuess(key)}>{key}</button>
+          )
+        })}
+      </div>
+
+      <div className='computerGameQuit'>
+        <button onClick={quitGame}>Quit</button>
+      </div>
+    </div>
+  );
 }
 
 export default App;

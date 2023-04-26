@@ -82,14 +82,17 @@ body {
     cursor: pointer;
 }
 
-.keyboardContainer button:hover {
+.keyboardContainer button.inactive {
+opacity: .25;
+}
+
+.keyboardContainer button:hover:not(:disabled) {
     background-color: grey;
     border: black solid 2px;   
 }
 
-.keyboardContainer button:active {
+.keyboardContainer button:focus:not(:disabled) {
     background-color: lightgrey;
-    cursor: pointer;
 }
 
 /* Game Word */

@@ -3,6 +3,17 @@ import {useEffect, useRef, useState} from 'react'
 import randomWords from 'random-words';
 import { v4 as uuidv4 } from 'uuid';
 
+import hangman0 from './assests/hangman-0.png';
+import hangman1 from './assests/hangman-1.png';
+import hangman2 from './assests/hangman-2.png';
+import hangman3 from './assests/hangman-3.png';
+import hangman4 from './assests/hangman-4.png';
+import hangman5 from './assests/hangman-5.png';
+import hangman6 from './assests/hangman-6.png';
+import hangman7 from './assests/hangman-7.png';
+import hangman8 from './assests/hangman-8.png';
+
+
 function App() {
 
   const KEYS = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
@@ -22,7 +33,11 @@ function App() {
   const nameInput = useRef();
 
   const gamesWon = useRef();
-  
+
+  // Create an array of hangman images
+  const hangmanImages = [hangman8, hangman7, hangman6, hangman5, hangman4, hangman3, hangman2, hangman1, hangman0];
+  const [hangmanImage, setHangmanImage] = useState(hangmanImages[0]);
+
   // On mount 
   useEffect(() => {
 
@@ -113,35 +128,31 @@ function App() {
     console.log("PLAY AGAINST PLAYER")
   }
 
+
   // Handles each guess
   const letterGuess = (letter) => {
-
-    // Variable to track if the guess is incorrect or not
     let correctGuess = false;
 
-    // Search the game word for the clicked letter
     for(let i = 0; i < gameWord.length; i++) {
-
-      // If there is a match
       if (gameWord[i] === letter) {
-
-        // Add letter to correct guesses array
         const correctGuessesCopy = [...correctGuesses];
         correctGuessesCopy.push(letter);
         setCorrectGuesses(correctGuessesCopy);
 
-        // Set correctGuess variable to true so we bypass the incorrect guesses
         correctGuess = true;
       }
     }
-    // No match, decrease incorrect guesses count
     if(!correctGuess) {
       setGuessesRemaining(guessesRemaining - 1);
     }
 
-    // Incriment total guesses
     setTotalGuesses(totalGuesses + 1);
+
+    // Update the hangman image based on the remaining guesses
+    const currentImageIndex = Math.max(0, hangmanImages.length - guessesRemaining);
+    setHangmanImage(hangmanImages[currentImageIndex]);
   }
+
 
   // Handles game over form submit
   const gameOverFormSubmit = (e) => {
@@ -216,7 +227,7 @@ function App() {
 
       <h1>Hangman</h1>
       <div className="gallowsContainer"></div>
-      
+        <img src={hangmanImage} alt="hangman" />
       <div>
         <p>Guesses Remaining: {guessesRemaining}</p>
       </div>

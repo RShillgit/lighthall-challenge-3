@@ -172,6 +172,7 @@ function App() {
     setTotalGuesses(0);
     setCorrectGuesses([]);
     setGuessesRemaining(8);
+    setHangmanImage(hangmanImages[0]);
     
     // Run play against computer function to create new word
     playAgainstComputer();

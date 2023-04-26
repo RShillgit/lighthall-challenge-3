@@ -142,16 +142,18 @@ function App() {
         correctGuess = true;
       }
     }
+
     if(!correctGuess) {
       setGuessesRemaining(guessesRemaining - 1);
+
+      // Update the hangman image based on the remaining guesses
+      const currentImageIndex = Math.max(0, hangmanImages.length - guessesRemaining);
+      setHangmanImage(hangmanImages[currentImageIndex]);
     }
 
     setTotalGuesses(totalGuesses + 1);
-
-    // Update the hangman image based on the remaining guesses
-    const currentImageIndex = Math.max(0, hangmanImages.length - guessesRemaining);
-    setHangmanImage(hangmanImages[currentImageIndex]);
   }
+
 
 
   // Handles game over form submit

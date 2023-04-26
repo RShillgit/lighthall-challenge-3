@@ -234,8 +234,10 @@ function App() {
       {loserScreen /* Overlay for loser */}
 
       <h1>Hangman</h1>
-      <div className="gallowsContainer"></div>
+      <div className="gallowsContainer">
         <img src={hangmanImage} alt="hangman" />
+      </div>
+        
       <div>
         <p>Guesses Remaining: {guessesRemaining}</p>
       </div>

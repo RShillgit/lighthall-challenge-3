@@ -33,6 +33,7 @@ function App() {
   const [loserScreen, setLoserScreen] = useState();
   const [winnerScreen, setWinnerScreen] = useState();
   const [leaderboardScores, setLeaderboardScores] = useState();
+  const [hint, setHintScreen] = useState();
 
   const wordInput = useRef();
   const nameInput = useRef();
@@ -162,7 +163,7 @@ function App() {
   }
 
   // Handles each guess
-  const letterGuess = async (letter) => {
+  const letterGuess = (letter) => {
     let correctGuess = false;
     const letterClicked = document.getElementById(letter)
     letterClicked.disabled = true;
@@ -183,21 +184,24 @@ function App() {
     }
   
     setTotalGuesses(totalGuesses + 1);
-  
-    if (guessesRemaining === 1) {
-      try {
-        const definition = await getDefinition(gameWord);
-        alert(`Hint: ${definition}`);
-      } catch (error) {
-        console.log(error);
-      }
-    }
   }  
 
+  //extract definition
+  async function getDefinition(word) {
+    const response = await fetch(`https://www.dictionaryapi.com/api/v3/references/collegiate/json/${word}?key=8be9f87e-3ee9-4572-8416-8cebdc1cfd92`);
+    const data = await response.json();
+    if (data.length > 0) {
+      return data[0].shortdef.join('\n');
+    } else {
+      throw new Error('Word not found');
+    }
+  }
+
+  //get hint
   const handleGetHint = async () => {
     try {
       const definition = await getDefinition(gameWord);
-      alert(`Hint: ${definition}`);
+      setHintScreen(`Definition Hint:${definition}`);
     } catch (error) {
       console.log(error);
     }
@@ -294,17 +298,6 @@ function App() {
     </>
   )
 
-  async function getDefinition(word) {
-    const response = await fetch(`https://www.dictionaryapi.com/api/v3/references/collegiate/json/${word}?key=8be9f87e-3ee9-4572-8416-8cebdc1cfd92`);
-    const data = await response.json();
-    if (data.length > 0) {
-      return data[0].shortdef.join('\n');
-    } else {
-      throw new Error('Word not found');
-    }
-  }
-  
-
   // Game over screen
   const gameOverDisplay = (
     <div className='loserScreenContainer'>
@@ -347,6 +340,10 @@ function App() {
             
           <div>
             <p>Guesses Remaining: {guessesRemaining}</p>
+          </div>
+
+          <div>
+            <p>{hint}</p>
             {guessesRemaining === 1 && <button onClick={handleGetHint}>Hint</button>}
           </div>
   

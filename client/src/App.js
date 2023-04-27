@@ -30,6 +30,7 @@ function App() {
   const [guessesRemaining, setGuessesRemaining] = useState(8);
 
   const [wordInputScreen, setWordInputScreen] = useState();
+  const [invalidLinkScreen, setInvalidLinkScreen] = useState();
   const [loserScreen, setLoserScreen] = useState();
   const [winnerScreen, setWinnerScreen] = useState();
   const [leaderboardScores, setLeaderboardScores] = useState();
@@ -47,7 +48,8 @@ function App() {
   // On mount 
   useEffect(() => {
 
-    console.log(window.location)
+    // Set games won to zero
+    gamesWon.current = 0;
 
     // IF url has the query string
     if(window.location.search.includes('?word=')) {
@@ -58,15 +60,31 @@ function App() {
       })
       .then(res => res.json())
       .then(data => {
-        console.log(data)
+
+        // If link is valid, start game with decrpyted word
+        if(data.success) {
+          const decryptedGameWord = data.decryptedWord.split('');
+          setGameWord(decryptedGameWord);
+        }
+
+        // If the link is invalid, display error overlay
+        else {
+          setInvalidLinkScreen(
+            <div className='invalidLinkScreen'>
+              <h1>{data.err}</h1>
+              <a href='/'>
+                <button>Main Menu</button>
+              </a>
+            </div>
+          )
+        }
+
       })
       .catch(err => console.log(err))
     } 
 
     // Else render start menu
     else {
-      // Set games won to zero
-      gamesWon.current = 0;
 
       // Render start menu display
       setStartMenu(
@@ -211,12 +229,11 @@ function App() {
     e.preventDefault();
 
     // Encrypt word
-    const encryptedWord = CryptoJS.AES.encrypt(wordInput.current, 'hangman');
-
-    // Add encrypted word to query
-    const playerURL = `http://localhost:3000/?word=${encryptedWord.toString()}`
+    const encryptedWord = CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(wordInput.current));
     
-    // Set 
+    const playerURL = `http://localhost:3000/?word=${encryptedWord}`
+    
+    // Display URL with encrypted word 
     setWordInputScreen(
       <div>
         <input type="text" value={playerURL} readOnly={true}/>
@@ -324,14 +341,15 @@ function App() {
               </div>
             )
           })}
-          <button onClick={() => window.location.reload()}>Main Menu</button>
+          <button onClick={() => window.location = window.location.pathname}>Main Menu</button>
         </div>
         : 
         <>
           {startMenu /* Overlay that will give options for playing against computer or player */}
           {winnerScreen /* Overlay for winner */}
           {loserScreen /* Overlay for loser */}
-          {wordInputScreen}
+          {wordInputScreen /* Overlay for vs player word input */}
+          {invalidLinkScreen /* Overlay for invalid link */}
   
           <h1>Hangman</h1>
           <div className="gallowsContainer">

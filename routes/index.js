@@ -5,13 +5,16 @@ const CryptoJS = require('crypto-js');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  console.log("word", req.query.word)
-
-  // Decrypt word
-  const decryptedWord = CryptoJS.AES.decrypt(req.query.word, 'hangman');
-  console.log(decryptedWord)
-  const plainString = decryptedWord.toString(CryptoJS.enc.Base64);
-  return res.status(200).json({decryptedWord: decryptedWord})
+  
+  // Try to decrpyt word from query string
+  try {
+    const decryptedWord = CryptoJS.enc.Base64.parse(req.query.word).toString(CryptoJS.enc.Utf8);
+    return res.status(200).json({success: true, decryptedWord: decryptedWord});
+  }
+  // Catch and return error message
+  catch(err) {
+    return res.status(500).json({success: false, err: 'The Link Provided Has Expired'});
+  }
 });
 
 /* Create new leaderboard entry */

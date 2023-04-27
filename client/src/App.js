@@ -245,38 +245,46 @@ function App() {
     // Display URL with encrypted word 
     setWordInputScreen(
       <div className='generatedLinkContainer'>
-        <input className='generatedLink' type="text" value={playerURL} readOnly={true}/>
-        <CopyToClipboard>
-          <button className='linkCopyButton'>Copy</button>
-        </CopyToClipboard>
-        
+        <div>
+          <input className='generatedLink' type="text" value={playerURL} readOnly={true}/>
+          <CopyToClipboard>
+            <button className='linkCopyButton'>Copy</button>
+          </CopyToClipboard>
+          
 
-        <EmailShareButton
-        className='emailButton'
-        url={playerURL}
-        quote={'Play Hangman with me!'}
-        hashtag="#hangman"
-        >
-          <EmailIcon size={64} round />
-        </EmailShareButton>
-
-        <FacebookShareButton
-        className='facebookButton'
+          <EmailShareButton
+          className='emailButton'
           url={playerURL}
           quote={'Play Hangman with me!'}
           hashtag="#hangman"
-        >
-          <FacebookIcon size={64} round />
-        </FacebookShareButton>
+          >
+            <EmailIcon size={64} round />
+          </EmailShareButton>
 
-        <TwitterShareButton
-        className='twitterButton'
-          url={playerURL}
-          quote={'Play Hangman with me!'}
-          hashtag="#hangman">
-          <TwitterIcon size={64} round />
-        </TwitterShareButton>
+          <FacebookShareButton
+          className='facebookButton'
+            url={playerURL}
+            quote={'Play Hangman with me!'}
+            hashtag="#hangman"
+          >
+            <FacebookIcon size={64} round />
+          </FacebookShareButton>
+
+          <TwitterShareButton
+          className='twitterButton'
+            url={playerURL}
+            quote={'Play Hangman with me!'}
+            hashtag="#hangman">
+            <TwitterIcon size={64} round />
+          </TwitterShareButton>
+        </div>
+        
+        <div>
+          <button className='mainMenuButton' onClick={() => window.location = window.location.pathname}>Main Menu</button>
+        </div>
       </div>
+
+
     )
   }
 
@@ -370,16 +378,22 @@ function App() {
     <div className="App">
       {(leaderboardScores)
         ?
-        <div className='leaderboardScreen'>
-          <h1>High Scores</h1>
-          {leaderboardScores.map((score, i) => {
-            return (
-              <div className='individualScore' key={score._id}>
-                <p>{i+1}. {score.name}: {score.gamesWon} Games Won</p>
-              </div>
-            )
-          })}
-          <button onClick={() => window.location = window.location.pathname}>Main Menu</button>
+        <div className='leaderboardContainer'>
+          <div>
+            <h1>High Scores</h1>
+          </div>
+          <div className='scoreDisplay'>
+            {leaderboardScores.map((score, i) => {
+              return (
+                <div className='individualScore' key={score._id}>
+                  <p>{i+1}. {score.name}: {score.gamesWon} Games Won</p>
+                </div>
+              )
+            })}
+          </div>
+          <div>
+            <button className='mainMenuButton' onClick={() => window.location = window.location.pathname}>Main Menu</button>
+          </div>
         </div>
         : 
         <>

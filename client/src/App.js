@@ -29,6 +29,7 @@ function App() {
 
   const [loserScreen, setLoserScreen] = useState();
   const [winnerScreen, setWinnerScreen] = useState();
+  const [leaderboardScores, setLeaderboardScores] = useState();
 
   const nameInput = useRef();
 
@@ -128,10 +129,7 @@ function App() {
     console.log("PLAY AGAINST PLAYER")
   }
 
-
   // Handles each guess
-
-
   const letterGuess = (letter) => {
     let correctGuess = false;
     
@@ -159,14 +157,27 @@ function App() {
     setTotalGuesses(totalGuesses + 1);
   }
 
-
-
   // Handles game over form submit
   const gameOverFormSubmit = (e) => {
     e.preventDefault();
 
-    console.log("User's Name", nameInput.current)
-    console.log("Games Won:", gamesWon.current)
+    console.log("User's Name", nameInput.current);
+    console.log("Games Won:", gamesWon.current);
+
+    fetch('http://localhost:8000/', {
+      method: 'POST',
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: nameInput.current,
+        gamesWon: gamesWon.current
+      })
+    })
+    .then(res => res.json())
+    .then(data => {
+      console.log(data)
+      setLeaderboardScores(data.topHighScores);
+    })
+    .catch(err => console.log(err))
   }
 
   // Continue game button click
@@ -180,6 +191,12 @@ function App() {
     setCorrectGuesses([]);
     setGuessesRemaining(8);
     setHangmanImage(hangmanImages[0]);
+
+    // Set keys back to normal
+    const allKeys = document.querySelectorAll('.keyboardKey');
+    allKeys.forEach(key => {
+      key.disabled = false;
+    })
     
     // Run play against computer function to create new word
     playAgainstComputer();
@@ -229,34 +246,51 @@ function App() {
   return (
     <div className="App">
 
-      {startMenu /* Overlay that will give options for playing against computer or player */}
-      {winnerScreen /* Overlay for winner */}
-      {loserScreen /* Overlay for loser */}
+      {(leaderboardScores)
+        ?
+        <div className='leaderboardScreen'>
+          <h1>High Scores</h1>
+          {leaderboardScores.map((score, i) => {
+            return (
+              <div className='individualScore' key={score._id}>
+                <p>{i+1}. {score.name}: {score.gamesWon} Games Won</p>
+              </div>
+            )
+          })}
+          <button onClick={() => window.location.reload()}>Main Menu</button>
+        </div>
+        : 
+        <>
+          {startMenu /* Overlay that will give options for playing against computer or player */}
+          {winnerScreen /* Overlay for winner */}
+          {loserScreen /* Overlay for loser */}
 
-      <h1>Hangman</h1>
-      <div className="gallowsContainer">
-        <img src={hangmanImage} alt="hangman" />
-      </div>
-        
-      <div>
-        <p>Guesses Remaining: {guessesRemaining}</p>
-      </div>
+          <h1>Hangman</h1>
+          <div className="gallowsContainer">
+            <img src={hangmanImage} alt="hangman" />
+          </div>
+            
+          <div>
+            <p>Guesses Remaining: {guessesRemaining}</p>
+          </div>
 
-      <div className="gameWordContainer">
-        {gameWordDisplay}
-      </div>
-      
-      <div className='keyboardContainer'>
-        {KEYS.map(key => {
-          return (
-            <button id={key} key={key} onClick={() => letterGuess(key)}>{key}</button>
-          )
-        })}
-      </div>
+          <div className="gameWordContainer">
+            {gameWordDisplay}
+          </div>
+          
+          <div className='keyboardContainer'>
+            {KEYS.map(key => {
+              return (
+                <button className='keyboardKey' id={key} key={key} onClick={() => letterGuess(key)}>{key}</button>
+              )
+            })}
+          </div>
 
-      <div className='computerGameQuit'>
-        <button onClick={quitGame}>Quit</button>
-      </div>
+          <div className='computerGameQuit'>
+            <button onClick={quitGame}>Quit</button>
+          </div>
+        </>
+      }
     </div>
   );
 }

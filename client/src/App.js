@@ -217,12 +217,13 @@ function App() {
   async function getDefinition(word) {
     const response = await fetch(`https://www.dictionaryapi.com/api/v3/references/collegiate/json/${word}?key=8be9f87e-3ee9-4572-8416-8cebdc1cfd92`);
     const data = await response.json();
-    if (data.length > 0) {
+    if (Array.isArray(data) && data.length > 0) {
       return data[0].shortdef.join('\n');
     } else {
-      throw new Error('Word not found');
+      throw new Error('Word not found in the dictionary.');
     }
   }
+
 
   //get hint
   const handleGetHint = async () => {
@@ -234,9 +235,9 @@ function App() {
     }
   };
 
-  const urlGenerator = (e) => {
+  const urlGenerator = async (e) => {
     e.preventDefault();
-
+  
     // Handle invalid inputs
     if (!/^[A-Za-z]*$/.test(wordInput.current)) {
       setWordInputScreen(
@@ -248,57 +249,68 @@ function App() {
           </form>
         </div>
       )
-    }
-    else {
-      // Encrypt word
-      const encryptedWord = CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(wordInput.current));
-      
-      const playerURL = `http://localhost:3000/?word=${encryptedWord}`
-      
-      // Display URL with encrypted word 
-      setWordInputScreen(
+    } else {
+      try {
+        // Check if word exists in dictionary
+        const definition = await getDefinition(wordInput.current);
+        // Encrypt word
+        const encryptedWord = CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(wordInput.current));
         
-        <div className='generatedLinkContainer'>
-        <div>
-          <input className='generatedLink' type="text" value={playerURL} readOnly={true}/>
-          <CopyToClipboard text={playerURL}>
-            <button className='linkCopyButton'>Copy</button>
-          </CopyToClipboard>
-
-          <EmailShareButton
-          className='emailButton'
-          url={playerURL}
-          quote={'Play Hangman with me!'}
-          hashtag="#hangman"
-          >
-            <EmailIcon size={64} round />
-          </EmailShareButton>
-
-          <FacebookShareButton
-          className='facebookButton'
-            url={playerURL}
-            quote={'Play Hangman with me!'}
-            hashtag="#hangman"
-          >
-            <FacebookIcon size={64} round />
-          </FacebookShareButton>
-
-          <TwitterShareButton
-            className='twitterButton'
-            url={playerURL}
-            quote={'Play Hangman with me!'}
-            hashtag="#hangman">
-          <TwitterIcon size={64} round />
-        </TwitterShareButton>
-      </div>
-
-      <div>
-        <button className='mainMenuButton' onClick={() => window.location = window.location.pathname}>Main Menu</button>
-      </div>
-    </div>
-    )
+        const playerURL = `http://localhost:3000/?word=${encryptedWord}`
+        
+        // Display URL with encrypted word 
+        setWordInputScreen(
+          <div className='generatedLinkContainer'>
+            <input className='generatedLink' type="text" value={playerURL} readOnly={true}/>
+            <CopyToClipboard>
+              <button className='linkCopyButton'>Copy</button>
+            </CopyToClipboard>
+            
+  
+            <EmailShareButton
+              className='emailButton'
+              url={playerURL}
+              quote={'Play Hangman with me!'}
+              hashtag="#hangman"
+            >
+              <EmailIcon size={64} round />
+            </EmailShareButton>
+  
+            <FacebookShareButton
+              className='facebookButton'
+              url={playerURL}
+              quote={'Play Hangman with me!'}
+              hashtag="#hangman"
+            >
+              <FacebookIcon size={64} round />
+            </FacebookShareButton>
+  
+            <TwitterShareButton
+              className='twitterButton'
+              url={playerURL}
+              quote={'Play Hangman with me!'}
+              hashtag="#hangman"
+            >
+              <TwitterIcon size={64} round />
+            </TwitterShareButton>
+  
+            <p className='definition'>{definition}</p>
+          </div>
+        );
+      } catch (error) {
+        // Word not found in dictionary
+        setWordInputScreen(
+          <div className='formContainer'>
+            <form className='generateLink' onSubmit={urlGenerator}>
+              <input className='playerWord' type="text" placeholder='Word' onChange={(e) => wordInput.current = e.target.value.toLowerCase()}/>
+              <button className='linkButton'>Generate Link</button>
+              <p className='errorMessage'>{"word does not exists"}</p>
+            </form>
+          </div>
+        )
+      }
+    }
   }
-}
 
   // Handles game over form submit
   const gameOverFormSubmit = (e) => {

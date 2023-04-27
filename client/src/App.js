@@ -15,7 +15,7 @@ import hangman5 from './assests/hangman-5.png';
 import hangman6 from './assests/hangman-6.png';
 import hangman7 from './assests/hangman-7.png';
 import hangman8 from './assests/hangman-8.png';
-
+import noose from './assests/nooselogo.png';
 
 function App() {
 
@@ -45,6 +45,7 @@ function App() {
   // Create an array of hangman images
   const hangmanImages = [hangman8, hangman7, hangman6, hangman5, hangman4, hangman3, hangman2, hangman1, hangman0];
   const [hangmanImage, setHangmanImage] = useState(hangmanImages[0]);
+  const nooseLogo = noose;
 
   // On mount 
   useEffect(() => {
@@ -90,6 +91,12 @@ function App() {
       // Render start menu display
       setStartMenu(
         <div className='startMenu-container'>
+          <div className='startMenuTitle'>
+            <h1>Hangman</h1>
+          </div>
+          <div className='logoContainer'>
+            <img src={nooseLogo} alt='noose logo' width="256" height="256"></img>
+          </div>
           <div className='startMenu-options'>
             <button onClick={playAgainstComputer}>Play Against Computer</button>
             <button onClick={playAgainstPlayer}>Play Against Friend</button>
@@ -384,7 +391,7 @@ function App() {
             <p>Guesses Remaining: {guessesRemaining}</p>
           </div>
 
-          <div>
+          <div className='hintButton'>
             <p>{hint}</p>
             {guessesRemaining === 1 && <button onClick={handleGetHint}>Hint</button>}
           </div>

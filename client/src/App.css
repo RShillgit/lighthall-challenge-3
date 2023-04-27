@@ -29,11 +29,21 @@ body {
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: rgba(0, 0, 0, 0.6);
+    background-color: #FCE5CD;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 }
+
+.startMenuTitle {
+    font-size: 2em;
+}
+
+.logoContainer {
+    padding: 25px;
+}
+
 .startMenu-options {
     display: flex;
     gap: 1rem;
@@ -42,7 +52,7 @@ body {
     padding: 1rem;
     font-size: x-large;
     border-radius: 0.5rem;
-    border: none;
+    border: black solid 2px;
 }
 .startMenu-options button:hover {
     cursor: pointer;

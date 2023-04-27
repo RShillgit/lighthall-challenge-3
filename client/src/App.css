@@ -18,8 +18,21 @@ body {
     margin: 1rem;
 }
 .computerGameQuit button {
-    font-size: 1em;
-    padding: 8px;
+    background-color: darkgray;
+    padding: 1rem;
+    font-size: x-large;
+    border-radius: 0.5rem;
+    border: black solid 2px;
+}
+
+.computerGameQuit button:hover {
+    cursor: pointer;
+    transform: translateY(-4px);
+    transition: transform 0.3s ease 0s;
+    box-shadow: 0px 5px 5px black;
+}
+.computerGameQuit button:active {
+    background-color: lightgray;
 }
 
 /* Start Menu */
@@ -49,6 +62,7 @@ body {
     gap: 1rem;
 }
 .startMenu-options button {
+    background-color: darkgray;
     padding: 1rem;
     font-size: x-large;
     border-radius: 0.5rem;
@@ -62,6 +76,177 @@ body {
 }
 .startMenu-options button:active {
     background-color: lightgray;
+}
+
+/*vs player form*/
+.formContainer {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #FCE5CD;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.formContainer form input {
+    border-radius: 0.25em;
+    background-image: none;
+    border: 0;
+    color: black;
+    font: inherit;
+    margin: 0;
+    outline: 0;
+    padding: 16px;
+    padding-left: 0.5em;
+    border-top: black solid 2px;
+    border-left: black solid 2px;
+    border-bottom: black solid 2px;
+}
+
+.linkButton {
+    background-color: darkgray;
+    padding: 1rem;
+    font-size: x-large;
+    border-radius: 0.5rem;
+    border-top: black solid 2px;
+    border-right: black solid 2px;
+    border-bottom: black solid 2px;}
+
+.linkButton:hover {
+    cursor: pointer;
+    transform: translateY(-4px);
+    transition: transform 0.3s ease 0s;
+    box-shadow: 0px 5px 5px black;
+}
+.linkButton:active {
+    background-color: lightgray;
+}
+
+.generatedLinkContainer {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #FCE5CD;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.generatedLink {
+    border-radius: 0.25em;
+    background-image: none;
+    border: 0;
+    color: black;
+    font: inherit;
+    margin: 0;
+    outline: 0;
+    padding: 16px;
+    padding-left: 0.5em;
+    border-top: black solid 2px;
+    border-left: black solid 2px;
+    border-bottom: black solid 2px;
+}
+
+.linkCopyButton {
+    background-color: darkgray;
+    margin-right: 16px;
+    padding: 1rem;
+    font-size: x-large;
+    border-radius: 0.5rem;
+    border-top: black solid 2px;
+    border-right: black solid 2px;
+    border-bottom: black solid 2px;}
+
+.linkCopyButton:hover {
+    cursor: pointer;
+    transform: translateY(-4px);
+    transition: transform 0.3s ease 0s;
+    box-shadow: 0px 5px 5px black;
+}
+.linkCopyButton:active {
+    background-color: lightgray;
+}
+
+.emailButton {
+    margin-left: 2px;
+    margin-right: 2px;    
+}
+
+.emailButton:hover {
+    cursor: pointer;
+    transform: translateY(-4px);
+    transition: transform 0.3s ease 0s;
+}
+
+.facebookButton {
+    margin-left: 2px;
+    margin-right: 2px;    
+}
+
+.facebookButton:hover {
+    cursor: pointer;
+    transform: translateY(-4px);
+    transition: transform 0.3s ease 0s;
+}
+
+.twitterButton {
+    margin-left: 2px;
+    margin-right: 2px;    
+}
+
+.twitterButton:hover {
+    cursor: pointer;
+    transform: translateY(-4px);
+    transition: transform 0.3s ease 0s;
+}
+
+/*game*/
+
+.App div h1 {
+    display: flex;
+    justify-content:left;
+    padding:16px;
+}
+.gallowsContainer {
+    display: flex;
+    justify-content: center;
+}
+
+.gallowsContainer img {
+    margin-right: 250px;
+}
+
+.hintButton {
+    display: flex;
+    justify-content: center;
+}
+
+.hintButton button {
+    background-color: darkgray;
+    padding: 1rem;
+    font-size: x-large;
+    border-radius: 0.5rem;
+    border: black solid 2px;
+}
+
+.hintButton button:hover {
+    cursor: pointer;
+    transform: translateY(-4px);
+    transition: transform 0.3s ease 0s;
+    box-shadow: 0px 5px 5px black;
+}
+.hintButton button:active {
+    background-color: lightgray;
+}
+
+.definitionHint {
+    margin: 32px;
 }
 
 /*keyboard*/
@@ -84,12 +269,13 @@ body {
     width: 100%;
     background-color: darkgray;
     aspect-ratio: 1/1;
-    border: none;
-    font-size: 1em;
     font-weight: bold;
     text-transform: uppercase;
-    padding: 4px;
     cursor: pointer;
+    padding: 1rem;
+    font-size: x-large;
+    border-radius: 0.5rem;
+    border: black solid 2px;
 }
 
 .keyboardContainer button.inactive {
@@ -99,6 +285,9 @@ opacity: .25;
 .keyboardContainer button:hover:not(:disabled) {
     background-color: grey;
     border: black solid 2px;   
+    transform: translateY(-4px);
+    transition: transform 0.3s ease 0s;
+    box-shadow: 0px 5px 5px black;
 }
 
 .keyboardContainer button:focus:not(:disabled) {
@@ -110,7 +299,9 @@ opacity: .25;
     display: flex;
     justify-content: center;
     gap: 8px;
+    margin-top: 275px;
 }
+
 .gameWord-character {
     display: flex;
     justify-content: center;
@@ -146,18 +337,52 @@ opacity: .25;
     justify-content: space-between;
 }
 .winnerButtons button {
-    font-size: 1em;
-    padding: 8px;
+    background-color: darkgray;
+    padding: 1rem;
+    font-size: x-large;
+    border-radius: 0.5rem;
+    border: black solid 2px;
 }
+
+.winnerButtons button:hover {
+    cursor: pointer;
+    transform: translateY(-4px);
+    transition: transform 0.3s ease 0s;
+    box-shadow: 0px 5px 5px black;
+}
+.winnerButtons button:active {
+    background-color: lightgray;
+}
+
 .gameOverForm {
     display: flex;
 }
 .gameOverForm input {
-    width: 100%;
-    font-size: 1em;
-    padding: 8px;
+    border-radius: 0.25em;
+    background-image: none;
+    border: 0;
+    color: black;
+    font: inherit;
+    margin: 0;
+    outline: 0;
+    padding: 16px;
+    padding-left: 0.5em;
+    border: black solid 2px;
 }
 .gameOverForm button {
-    font-size: 1em;
-    padding: 8px;
+    background-color: darkgray;
+    padding: 1rem;
+    font-size: x-large;
+    border-radius: 0.5rem;
+    border: black solid 2px;
+}
+
+.gameOverForm button:hover {
+    cursor: pointer;
+    transform: translateY(-4px);
+    transition: transform 0.3s ease 0s;
+    box-shadow: 0px 5px 5px black;
+}
+.gameOverForm button:active {
+    background-color: lightgray;
 }

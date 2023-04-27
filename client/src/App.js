@@ -3,6 +3,7 @@ import {useEffect, useRef, useState} from 'react'
 import randomWords from 'random-words';
 import { v4 as uuidv4 } from 'uuid';
 import { EmailShareButton, FacebookShareButton, TwitterShareButton, EmailIcon, FacebookIcon, TwitterIcon } from 'react-share';
+import {CopyToClipboard} from 'react-copy-to-clipboard';
 
 import CryptoJS from 'crypto-js';
 
@@ -177,10 +178,10 @@ function App() {
     setStartMenu();
 
     setWordInputScreen(
-      <div>
-        <form onSubmit={urlGenerator}>
-          <input type="text" placeholder='Word' onChange={(e) => wordInput.current = e.target.value.toLowerCase()}/>
-          <button>Generate Link</button>
+      <div className='formContainer'>
+        <form className='generateLink' onSubmit={urlGenerator}>
+          <input classNme='playerWord' type="text" placeholder='Word' onChange={(e) => wordInput.current = e.target.value.toLowerCase()}/>
+          <button className='linkButton'>Generate Link</button>
         </form>
       </div>
     )
@@ -227,7 +228,7 @@ function App() {
   const handleGetHint = async () => {
     try {
       const definition = await getDefinition(gameWord);
-      setHintScreen(`Definition Hint:${definition}`);
+      setHintScreen(`Definition: ${definition}`);
     } catch (error) {
       console.log(error);
     }
@@ -243,31 +244,37 @@ function App() {
     
     // Display URL with encrypted word 
     setWordInputScreen(
-      <div>
-        <input type="text" value={playerURL} readOnly={true}/>
-        <button>Copy</button>
+      <div className='generatedLinkContainer'>
+        <input className='generatedLink' type="text" value={playerURL} readOnly={true}/>
+        <CopyToClipboard>
+          <button className='linkCopyButton'>Copy</button>
+        </CopyToClipboard>
+        
 
         <EmailShareButton
+        className='emailButton'
         url={playerURL}
         quote={'Play Hangman with me!'}
         hashtag="#hangman"
         >
-          <EmailIcon size={32} round />
+          <EmailIcon size={64} round />
         </EmailShareButton>
 
         <FacebookShareButton
+        className='facebookButton'
           url={playerURL}
           quote={'Play Hangman with me!'}
           hashtag="#hangman"
         >
-          <FacebookIcon size={32} round />
+          <FacebookIcon size={64} round />
         </FacebookShareButton>
 
         <TwitterShareButton
+        className='twitterButton'
           url={playerURL}
           quote={'Play Hangman with me!'}
           hashtag="#hangman">
-          <TwitterIcon size={32} round />
+          <TwitterIcon size={64} round />
         </TwitterShareButton>
       </div>
     )
@@ -381,23 +388,24 @@ function App() {
           {loserScreen /* Overlay for loser */}
           {wordInputScreen /* Overlay for vs player word input */}
           {invalidLinkScreen /* Overlay for invalid link */}
-  
-          <h1>Hangman</h1>
+          <div>
+            <h1>Hangman</h1>
+          </div>
           <div className="gallowsContainer">
             <img src={hangmanImage} alt="hangman" />
+            <div className='gameScreen'>
+              <p>Guesses Remaining: {guessesRemaining}</p>
+              <div className="gameWordContainer">
+              {gameWordDisplay}
+              </div>
+            </div>
+
           </div>
             
-          <div>
-            <p>Guesses Remaining: {guessesRemaining}</p>
-          </div>
-
-          <div className='hintButton'>
-            <p>{hint}</p>
+          <div className='hintContainer'>
+            <div className='hintButton'>
+            <p className='definitionHint'>{hint}</p>
             {guessesRemaining === 1 && <button onClick={handleGetHint}>Hint</button>}
-          </div>
-  
-          <div className="gameWordContainer">
-            {gameWordDisplay}
           </div>
           
           <div className='keyboardContainer'>
@@ -407,6 +415,9 @@ function App() {
               )
             })}
           </div>
+          </div>
+
+          
   
           <div className='computerGameQuit'>
             <button onClick={quitGame}>Quit</button>

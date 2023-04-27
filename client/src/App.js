@@ -261,7 +261,7 @@ function App() {
         <div className='generatedLinkContainer'>
         <div>
           <input className='generatedLink' type="text" value={playerURL} readOnly={true}/>
-          <CopyToClipboard>
+          <CopyToClipboard text={playerURL}>
             <button className='linkCopyButton'>Copy</button>
           </CopyToClipboard>
 

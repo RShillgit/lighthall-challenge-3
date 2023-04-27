@@ -2,6 +2,7 @@ import './App.css';
 import {useEffect, useRef, useState} from 'react'
 import randomWords from 'random-words';
 import { v4 as uuidv4 } from 'uuid';
+import { EmailShareButton, FacebookShareButton, TwitterShareButton, EmailIcon, FacebookIcon, TwitterIcon } from 'react-share';
 
 import CryptoJS from 'crypto-js';
 
@@ -238,6 +239,29 @@ function App() {
       <div>
         <input type="text" value={playerURL} readOnly={true}/>
         <button>Copy</button>
+
+        <EmailShareButton
+        url={playerURL}
+        quote={'Play Hangman with me!'}
+        hashtag="#hangman"
+        >
+          <EmailIcon size={32} round />
+        </EmailShareButton>
+
+        <FacebookShareButton
+          url={playerURL}
+          quote={'Play Hangman with me!'}
+          hashtag="#hangman"
+        >
+          <FacebookIcon size={32} round />
+        </FacebookShareButton>
+
+        <TwitterShareButton
+          url={playerURL}
+          quote={'Play Hangman with me!'}
+          hashtag="#hangman">
+          <TwitterIcon size={32} round />
+        </TwitterShareButton>
       </div>
     )
   }

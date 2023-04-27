@@ -1,10 +1,19 @@
 var express = require('express');
 var router = express.Router();
 const highScore = require('../models/highScore');
+const CryptoJS = require('crypto-js');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  console.log("word", req.query.word)
+
+  // Decrypt word
+  const decryptedWord = CryptoJS.AES.decrypt(req.query.word, 'hangman');
+  console.log(decryptedWord)
+  
+  const plainString = decryptedWord.toString(CryptoJS.enc.Base64);
+
+  return res.status(200).json({decryptedWord: decryptedWord})
 });
 
 /* Create new leaderboard entry */

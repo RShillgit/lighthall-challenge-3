@@ -3,6 +3,8 @@ import {useEffect, useRef, useState} from 'react'
 import randomWords from 'random-words';
 import { v4 as uuidv4 } from 'uuid';
 
+import CryptoJS from 'crypto-js';
+
 import hangman0 from './assests/hangman-0.png';
 import hangman1 from './assests/hangman-1.png';
 import hangman2 from './assests/hangman-2.png';
@@ -27,10 +29,12 @@ function App() {
   const [correctGuesses, setCorrectGuesses] = useState([]);
   const [guessesRemaining, setGuessesRemaining] = useState(8);
 
+  const [wordInputScreen, setWordInputScreen] = useState();
   const [loserScreen, setLoserScreen] = useState();
   const [winnerScreen, setWinnerScreen] = useState();
   const [leaderboardScores, setLeaderboardScores] = useState();
 
+  const wordInput = useRef();
   const nameInput = useRef();
 
   const gamesWon = useRef();
@@ -42,18 +46,37 @@ function App() {
   // On mount 
   useEffect(() => {
 
-    // Set games won to zero
-    gamesWon.current = 0;
+    console.log(window.location)
 
-    // Render start menu display
-    setStartMenu(
-      <div className='startMenu-container'>
-        <div className='startMenu-options'>
-          <button onClick={playAgainstComputer}>Play Against Computer</button>
-          <button onClick={playAgainstPlayer}>Play Against Friend</button>
+    // IF url has the query string
+    if(window.location.search.includes('?word=')) {
+      
+      fetch(`http://localhost:8000/${window.location.search}`, {
+        headers: { "Content-Type": "application/json" },
+        mode: 'cors'
+      })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data)
+      })
+      .catch(err => console.log(err))
+    } 
+
+    // Else render start menu
+    else {
+      // Set games won to zero
+      gamesWon.current = 0;
+
+      // Render start menu display
+      setStartMenu(
+        <div className='startMenu-container'>
+          <div className='startMenu-options'>
+            <button onClick={playAgainstComputer}>Play Against Computer</button>
+            <button onClick={playAgainstPlayer}>Play Against Friend</button>
+          </div>
         </div>
-      </div>
-    )
+      )
+    }
 
   }, [])
 
@@ -126,6 +149,15 @@ function App() {
     // Remove start menu overlay
     setStartMenu();
 
+    setWordInputScreen(
+      <div>
+        <form onSubmit={urlGenerator}>
+          <input type="text" placeholder='Word' onChange={(e) => wordInput.current = e.target.value.toLowerCase()}/>
+          <button>Generate Link</button>
+        </form>
+      </div>
+    )
+
     console.log("PLAY AGAINST PLAYER")
   }
 
@@ -155,6 +187,24 @@ function App() {
     }
 
     setTotalGuesses(totalGuesses + 1);
+  }
+
+  const urlGenerator = (e) => {
+    e.preventDefault();
+
+    // Encrypt word
+    const encryptedWord = CryptoJS.AES.encrypt(wordInput.current, 'hangman');
+
+    // Add encrypted word to query
+    const playerURL = `http://localhost:3000/?word=${encryptedWord.toString()}`
+    
+    // Set 
+    setWordInputScreen(
+      <div>
+        <input type="text" value={playerURL} readOnly={true}/>
+        <button>Copy</button>
+      </div>
+    )
   }
 
   // Handles game over form submit
@@ -264,6 +314,7 @@ function App() {
           {startMenu /* Overlay that will give options for playing against computer or player */}
           {winnerScreen /* Overlay for winner */}
           {loserScreen /* Overlay for loser */}
+          {wordInputScreen}
 
           <h1>Hangman</h1>
           <div className="gallowsContainer">

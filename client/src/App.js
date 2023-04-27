@@ -180,7 +180,7 @@ function App() {
     setWordInputScreen(
       <div className='formContainer'>
         <form className='generateLink' onSubmit={urlGenerator}>
-          <input classNme='playerWord' type="text" placeholder='Word' onChange={(e) => wordInput.current = e.target.value.toLowerCase()}/>
+          <input className='playerWord' type="text" placeholder='Word' onChange={(e) => wordInput.current = e.target.value.toLowerCase()}/>
           <button className='linkButton'>Generate Link</button>
         </form>
       </div>
@@ -237,15 +237,27 @@ function App() {
   const urlGenerator = (e) => {
     e.preventDefault();
 
-    // Encrypt word
-    const encryptedWord = CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(wordInput.current));
-    
-    const playerURL = `http://localhost:3000/?word=${encryptedWord}`
-    
-    // Display URL with encrypted word 
-    setWordInputScreen(
-      <div className='generatedLinkContainer'>
-        <div>
+    // Handle invalid inputs
+    if (!/^[A-Za-z]*$/.test(wordInput.current)) {
+      setWordInputScreen(
+        <div className='formContainer'>
+          <form className='generateLink' onSubmit={urlGenerator}>
+            <input className='playerWord' type="text" placeholder='Word' onChange={(e) => wordInput.current = e.target.value.toLowerCase()}/>
+            <button className='linkButton'>Generate Link</button>
+            <p className='errorMessage'>Word must contain only letters</p>
+          </form>
+        </div>
+      )
+    }
+    else {
+      // Encrypt word
+      const encryptedWord = CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(wordInput.current));
+      
+      const playerURL = `http://localhost:3000/?word=${encryptedWord}`
+      
+      // Display URL with encrypted word 
+      setWordInputScreen(
+        <div className='generatedLinkContainer'>
           <input className='generatedLink' type="text" value={playerURL} readOnly={true}/>
           <CopyToClipboard>
             <button className='linkCopyButton'>Copy</button>
@@ -270,21 +282,14 @@ function App() {
             <FacebookIcon size={64} round />
           </FacebookShareButton>
 
-          <TwitterShareButton
-          className='twitterButton'
-            url={playerURL}
-            quote={'Play Hangman with me!'}
-            hashtag="#hangman">
-            <TwitterIcon size={64} round />
-          </TwitterShareButton>
-        </div>
-        
-        <div>
-          <button className='mainMenuButton' onClick={() => window.location = window.location.pathname}>Main Menu</button>
-        </div>
+        <TwitterShareButton
+        className='twitterButton'
+          url={playerURL}
+          quote={'Play Hangman with me!'}
+          hashtag="#hangman">
+          <TwitterIcon size={64} round />
+        </TwitterShareButton>
       </div>
-
-
     )
   }
 

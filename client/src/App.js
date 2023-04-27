@@ -257,12 +257,13 @@ function App() {
       
       // Display URL with encrypted word 
       setWordInputScreen(
+        
         <div className='generatedLinkContainer'>
+        <div>
           <input className='generatedLink' type="text" value={playerURL} readOnly={true}/>
           <CopyToClipboard>
             <button className='linkCopyButton'>Copy</button>
           </CopyToClipboard>
-          
 
           <EmailShareButton
           className='emailButton'
@@ -282,16 +283,22 @@ function App() {
             <FacebookIcon size={64} round />
           </FacebookShareButton>
 
-        <TwitterShareButton
-        className='twitterButton'
-          url={playerURL}
-          quote={'Play Hangman with me!'}
-          hashtag="#hangman">
+          <TwitterShareButton
+            className='twitterButton'
+            url={playerURL}
+            quote={'Play Hangman with me!'}
+            hashtag="#hangman">
           <TwitterIcon size={64} round />
         </TwitterShareButton>
       </div>
+
+      <div>
+        <button className='mainMenuButton' onClick={() => window.location = window.location.pathname}>Main Menu</button>
+      </div>
+    </div>
     )
   }
+}
 
   // Handles game over form submit
   const gameOverFormSubmit = (e) => {
@@ -445,7 +452,6 @@ function App() {
       }
     </div>
   );
-  
  
 }
 

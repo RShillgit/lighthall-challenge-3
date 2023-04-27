@@ -10,9 +10,7 @@ router.get('/', function(req, res, next) {
   // Decrypt word
   const decryptedWord = CryptoJS.AES.decrypt(req.query.word, 'hangman');
   console.log(decryptedWord)
-  
   const plainString = decryptedWord.toString(CryptoJS.enc.Base64);
-
   return res.status(200).json({decryptedWord: decryptedWord})
 });
 

@@ -33,6 +33,7 @@ function App() {
   const [loserScreen, setLoserScreen] = useState();
   const [winnerScreen, setWinnerScreen] = useState();
   const [leaderboardScores, setLeaderboardScores] = useState();
+  const [hint, setHintScreen] = useState();
 
   const wordInput = useRef();
   const nameInput = useRef();
@@ -164,7 +165,6 @@ function App() {
   // Handles each guess
   const letterGuess = (letter) => {
     let correctGuess = false;
-    
     const letterClicked = document.getElementById(letter)
     letterClicked.disabled = true;
     
@@ -173,21 +173,39 @@ function App() {
         const correctGuessesCopy = [...correctGuesses];
         correctGuessesCopy.push(letter);
         setCorrectGuesses(correctGuessesCopy);
-
         correctGuess = true;
       }
     }
-
+  
     if(!correctGuess) {
       setGuessesRemaining(guessesRemaining - 1);
-
-      // Update the hangman image based on the remaining guesses
       const currentImageIndex = Math.max(0, hangmanImages.length - guessesRemaining);
       setHangmanImage(hangmanImages[currentImageIndex]);
     }
-
+  
     setTotalGuesses(totalGuesses + 1);
+  }  
+
+  //extract definition
+  async function getDefinition(word) {
+    const response = await fetch(`https://www.dictionaryapi.com/api/v3/references/collegiate/json/${word}?key=8be9f87e-3ee9-4572-8416-8cebdc1cfd92`);
+    const data = await response.json();
+    if (data.length > 0) {
+      return data[0].shortdef.join('\n');
+    } else {
+      throw new Error('Word not found');
+    }
   }
+
+  //get hint
+  const handleGetHint = async () => {
+    try {
+      const definition = await getDefinition(gameWord);
+      setHintScreen(`Definition Hint:${definition}`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const urlGenerator = (e) => {
     e.preventDefault();
@@ -295,7 +313,6 @@ function App() {
 
   return (
     <div className="App">
-
       {(leaderboardScores)
         ?
         <div className='leaderboardScreen'>
@@ -315,7 +332,7 @@ function App() {
           {winnerScreen /* Overlay for winner */}
           {loserScreen /* Overlay for loser */}
           {wordInputScreen}
-
+  
           <h1>Hangman</h1>
           <div className="gallowsContainer">
             <img src={hangmanImage} alt="hangman" />
@@ -325,6 +342,11 @@ function App() {
             <p>Guesses Remaining: {guessesRemaining}</p>
           </div>
 
+          <div>
+            <p>{hint}</p>
+            {guessesRemaining === 1 && <button onClick={handleGetHint}>Hint</button>}
+          </div>
+  
           <div className="gameWordContainer">
             {gameWordDisplay}
           </div>
@@ -336,7 +358,7 @@ function App() {
               )
             })}
           </div>
-
+  
           <div className='computerGameQuit'>
             <button onClick={quitGame}>Quit</button>
           </div>
@@ -344,6 +366,8 @@ function App() {
       }
     </div>
   );
+  
+ 
 }
 
 export default App;

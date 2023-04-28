@@ -268,7 +268,7 @@ function App() {
           <div>
             <input className='generatedLink' type="text" value={playerURL} readOnly={true}/>
               <CopyToClipboard text={playerURL}>
-                <button className='linkCopyButton'>Copy</button>
+                <button className='linkCopyButton'><i class="fa fa-clipboard" aria-hidden="true"></i> Copy</button>
               </CopyToClipboard>
               
     
@@ -465,10 +465,15 @@ function App() {
                   <h1>High Scores</h1>
                 </div>
                 <div className='scoreDisplay'>
+                  <div className='scoreTitles'>
+                    <p className='scoreNames'>Name</p>
+                    <p className='scoreTotals'>Score</p>
+                  </div>
                   {leaderboardScores.map((score, i) => {
                     return (
                       <div className='individualScore' key={score._id}>
-                        <p>{i+1}. {score.name}: {score.gamesWon} Games Won</p>
+                        <p>{i+1}. {score.name}</p> 
+                        <p>{score.gamesWon}</p>
                       </div>
                     )
                   })}

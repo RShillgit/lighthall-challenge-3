@@ -418,7 +418,8 @@ function App() {
       <div className='hintContainer'>
         <div className='hintButton'>
         <p className='definitionHint'>{hint}</p>
-        {guessesRemaining === 1 && <button onClick={handleGetHint}>Hint</button>}
+          {guessesRemaining === 1 && <button onClick={handleGetHint}>Hint</button>}
+        </div>
       </div>
       
       <div className='keyboardContainer'>
@@ -427,7 +428,6 @@ function App() {
             <button className='keyboardKey' id={key} key={key} onClick={() => letterGuess(key)}>{key}</button>
           )
         })}
-      </div>
       </div>
 
       <div className='computerGameQuit'>

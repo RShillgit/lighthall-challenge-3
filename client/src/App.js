@@ -224,12 +224,15 @@ function App() {
     }
   }
 
-
   //get hint
   const handleGetHint = async () => {
     try {
       const definition = await getDefinition(gameWord);
-      setHintScreen(`Definition: ${definition}`);
+      if(definition.length > 0){
+        setHintScreen(`Definition: ${definition}`);
+      }else{
+        setHintScreen('No definition hint for this word.');
+      }
     } catch (error) {
       console.log(error);
     }

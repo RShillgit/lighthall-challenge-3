@@ -366,6 +366,11 @@ opacity: .25;
     background-color: #FCE5CD;
     padding: 3rem;
 }
+
+.overlayContent p span {
+    font-weight: bold;
+}
+
 .winnerButtons {
     display: flex;
     width: 100%;

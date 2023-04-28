@@ -443,6 +443,7 @@ function App() {
   const gameOverDisplay = (
     <div className='loserScreenContainer'>
       <div className='overlayContent'>
+        <p>Sorry! The game word was: <span>{gameWord}</span></p>
         <h1>Game Over!</h1>
         <form onSubmit={gameOverFormSubmit} className='gameOverForm'>
           <input type="text" placeholder='Your Name' onChange={(e) => nameInput.current = e.target.value} required={true}/>

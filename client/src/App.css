@@ -19,7 +19,7 @@ body {
 }
 .computerGameQuit button {
     background-color: darkgray;
-    padding: 1rem;
+    padding: 1rem 4rem;
     font-size: x-large;
     border-radius: 0.5rem;
     border: black solid 2px;
@@ -369,7 +369,7 @@ opacity: .25;
 }
 .winnerButtons button {
     background-color: darkgray;
-    padding: 1rem;
+    padding: 1rem 1.5rem;
     font-size: x-large;
     border-radius: 0.5rem;
     border: black solid 2px;
@@ -421,7 +421,7 @@ opacity: .25;
 .mainMenuButton {
     margin-top: 64px;
     background-color: darkgray;
-    padding: 1rem;
+    padding: 1rem 4rem;
     font-size: x-large;
     border-radius: 0.5rem;
     border: black solid 2px;

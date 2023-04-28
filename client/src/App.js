@@ -218,7 +218,7 @@ function App() {
     const response = await fetch(`https://www.dictionaryapi.com/api/v3/references/collegiate/json/${word}?key=8be9f87e-3ee9-4572-8416-8cebdc1cfd92`);
     const data = await response.json();
     if (Array.isArray(data) && data.length > 0) {
-      return data[0].shortdef.join('\n');
+      return;
     } else {
       throw new Error('Word not found in the dictionary.');
     }

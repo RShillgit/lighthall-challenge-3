@@ -444,3 +444,7 @@ opacity: .25;
     margin-top: 12px;
     padding-top: 12px;
 }
+
+.individualScore p span {
+font-weight: bold;
+}

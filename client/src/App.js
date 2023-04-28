@@ -472,7 +472,7 @@ function App() {
                   {leaderboardScores.map((score, i) => {
                     return (
                       <div className='individualScore' key={score._id}>
-                        <p>{i+1}. {score.name}</p> 
+                        <p><span>{i+1}.</span> {score.name}</p> 
                         <p>{score.gamesWon}</p>
                       </div>
                     )
@@ -493,8 +493,7 @@ function App() {
       }
 
     </div>
-  );
- 
+  ); 
 }
 
 export default App;

@@ -17,6 +17,7 @@ import hangman6 from './assests/hangman-6.png';
 import hangman7 from './assests/hangman-7.png';
 import hangman8 from './assests/hangman-8.png';
 import noose from './assests/nooselogo.png';
+import { set } from 'mongoose';
 
 function App() {
 
@@ -336,8 +337,8 @@ function App() {
     })
     .then(res => res.json())
     .then(data => {
-      console.log(data)
       setLeaderboardScores(data.topHighScores);
+      setLoserScreen();
     })
     .catch(err => console.log(err))
   }
@@ -406,70 +407,86 @@ function App() {
     </div>
   )
 
-  return (
-    <div className="App">
-      {(leaderboardScores)
-        ?
-        <div className='leaderboardContainer'>
-          <div>
-            <h1>High Scores</h1>
-          </div>
-          <div className='scoreDisplay'>
-            {leaderboardScores.map((score, i) => {
-              return (
-                <div className='individualScore' key={score._id}>
-                  <p>{i+1}. {score.name}: {score.gamesWon} Games Won</p>
-                </div>
-              )
-            })}
-          </div>
-          <div>
-            <button className='mainMenuButton' onClick={() => window.location = window.location.pathname}>Main Menu</button>
+  // Main game page
+  const mainGame = (
+    <>
+      <div>
+        <h1>Hangman</h1>
+      </div>
+      <div className="gallowsContainer">
+        <img src={hangmanImage} alt="hangman" />
+        <div className='gameScreen'>
+          <p>Guesses Remaining: {guessesRemaining}</p>
+          <div className="gameWordContainer">
+          {gameWordDisplay}
           </div>
         </div>
-        : 
+
+      </div>
+        
+      <div className='hintContainer'>
+        <div className='hintButton'>
+        <p className='definitionHint'>{hint}</p>
+        {guessesRemaining === 1 && <button onClick={handleGetHint}>Hint</button>}
+      </div>
+      
+      <div className='keyboardContainer'>
+        {KEYS.map(key => {
+          return (
+            <button className='keyboardKey' id={key} key={key} onClick={() => letterGuess(key)}>{key}</button>
+          )
+        })}
+      </div>
+      </div>
+
+      <div className='computerGameQuit'>
+        <button onClick={quitGame}>Quit</button>
+      </div>
+    </>
+  )
+
+  return (
+    <div className="App">
+    
+      {(startMenu || winnerScreen || loserScreen || wordInputScreen || invalidLinkScreen || leaderboardScores)
+        ? 
         <>
           {startMenu /* Overlay that will give options for playing against computer or player */}
           {winnerScreen /* Overlay for winner */}
           {loserScreen /* Overlay for loser */}
           {wordInputScreen /* Overlay for vs player word input */}
           {invalidLinkScreen /* Overlay for invalid link */}
-          <div>
-            <h1>Hangman</h1>
-          </div>
-          <div className="gallowsContainer">
-            <img src={hangmanImage} alt="hangman" />
-            <div className='gameScreen'>
-              <p>Guesses Remaining: {guessesRemaining}</p>
-              <div className="gameWordContainer">
-              {gameWordDisplay}
+
+          <>
+            {(leaderboardScores)
+              ?
+              <div className='leaderboardContainer'>
+                <div>
+                  <h1>High Scores</h1>
+                </div>
+                <div className='scoreDisplay'>
+                  {leaderboardScores.map((score, i) => {
+                    return (
+                      <div className='individualScore' key={score._id}>
+                        <p>{i+1}. {score.name}: {score.gamesWon} Games Won</p>
+                      </div>
+                    )
+                  })}
+                </div>
+                <div>
+                  <button className='mainMenuButton' onClick={() => window.location = window.location.pathname}>Main Menu</button>
+                </div>
               </div>
-            </div>
-
-          </div>
-            
-          <div className='hintContainer'>
-            <div className='hintButton'>
-            <p className='definitionHint'>{hint}</p>
-            {guessesRemaining === 1 && <button onClick={handleGetHint}>Hint</button>}
-          </div>
-          
-          <div className='keyboardContainer'>
-            {KEYS.map(key => {
-              return (
-                <button className='keyboardKey' id={key} key={key} onClick={() => letterGuess(key)}>{key}</button>
-              )
-            })}
-          </div>
-          </div>
-
-          
-  
-          <div className='computerGameQuit'>
-            <button onClick={quitGame}>Quit</button>
-          </div>
+              : <></>
+            }
+          </>
+        </>
+        : 
+        <>
+          {mainGame}
         </>
       }
+
     </div>
   );
  

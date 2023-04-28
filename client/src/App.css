@@ -232,6 +232,8 @@ body {
 .hintButton {
     display: flex;
     justify-content: center;
+    align-items: center;
+    margin: 32px;
 }
 
 .hintButton button {
@@ -250,10 +252,6 @@ body {
 }
 .hintButton button:active {
     background-color: lightgray;
-}
-
-.definitionHint {
-    margin: 32px;
 }
 
 /*keyboard*/

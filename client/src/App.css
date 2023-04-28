@@ -130,6 +130,10 @@ body {
     margin-top: 25px;
 }
 
+.wordInputScreen-MainMenu button {
+    margin-top: 32px;
+}
+
 /*leaderboard*/
 .viewLeaderboard {
     margin-top: 25px;

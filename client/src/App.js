@@ -167,6 +167,15 @@ function App() {
           <input className='playerWord' type="text" placeholder='Word' onChange={(e) => wordInput.current = e.target.value.toLowerCase()} required={true}/>
           <button className='linkButton'>Generate Link</button>
         </form>
+        <div className='wordInputScreen-MainMenu'>
+            <button className='mainMenuButton' onClick={
+              () => {
+                setWordInputScreen();
+                setStartMenu(startMenuDisplay);
+              }}
+              >Main Menu
+            </button>
+          </div>
       </div>
     )
   }
@@ -232,6 +241,15 @@ function App() {
             <button className='linkButton'>Generate Link</button>
             <p className='errorMessage'>Word must contain only letters</p>
           </form>
+          <div className='wordInputScreen-MainMenu'>
+            <button className='mainMenuButton' onClick={
+              () => {
+                setWordInputScreen();
+                setStartMenu(startMenuDisplay);
+              }}
+              >Main Menu
+            </button>
+          </div>
         </div>
       )
     } else {
@@ -295,6 +313,15 @@ function App() {
               <button className='linkButton'>Generate Link</button>
               <p className='errorMessage'>{"Word cannot be found"}</p>
             </form>
+            <div className='wordInputScreen-MainMenu'>
+              <button className='mainMenuButton' onClick={
+                () => {
+                  setWordInputScreen();
+                  setStartMenu(startMenuDisplay);
+                }}
+                >Main Menu
+              </button>
+            </div>
           </div>
         )
       }

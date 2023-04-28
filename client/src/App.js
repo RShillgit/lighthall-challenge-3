@@ -17,7 +17,6 @@ import hangman6 from './assests/hangman-6.png';
 import hangman7 from './assests/hangman-7.png';
 import hangman8 from './assests/hangman-8.png';
 import noose from './assests/nooselogo.png';
-import { set } from 'mongoose';
 
 function App() {
 
@@ -49,6 +48,8 @@ function App() {
   const [hangmanImage, setHangmanImage] = useState(hangmanImages[0]);
   const nooseLogo = noose;
 
+  const serverURL = 'http://localhost:8000';
+
   // On mount 
   useEffect(() => {
 
@@ -58,7 +59,7 @@ function App() {
     // IF url has the query string
     if(window.location.search.includes('?word=')) {
       
-      fetch(`http://localhost:8000/${window.location.search}`, {
+      fetch(`${serverURL}/${window.location.search}`, {
         headers: { "Content-Type": "application/json" },
         mode: 'cors'
       })
@@ -131,7 +132,6 @@ function App() {
 
         // Incriment number of games won
         gamesWon.current += 1;
-        console.log("Games Won:", gamesWon.current)
 
         // Display winner screen
         setWinnerScreen(
@@ -167,12 +167,8 @@ function App() {
 
     // Get random word as an array of characters
     const randomlyGeneratedWord = randomWords().split('');
-    
-    console.log(randomlyGeneratedWord);
 
     setGameWord(randomlyGeneratedWord);
-
-    console.log("PLAYING AGAINST COMPUTER");
   }
 
   // Run game vs player
@@ -189,8 +185,6 @@ function App() {
         </form>
       </div>
     )
-
-    console.log("PLAY AGAINST PLAYER")
   }
 
   // Handles each guess
@@ -271,7 +265,7 @@ function App() {
           <div>
             <input className='generatedLink' type="text" value={playerURL} readOnly={true}/>
               <CopyToClipboard text={playerURL}>
-                <button className='linkCopyButton'><i class="fa fa-clipboard" aria-hidden="true"></i> Copy</button>
+                <button className='linkCopyButton'><i className="fa fa-clipboard" aria-hidden="true"></i> Copy</button>
               </CopyToClipboard>
               
     
@@ -327,10 +321,7 @@ function App() {
   const gameOverFormSubmit = (e) => {
     e.preventDefault();
 
-    console.log("User's Name", nameInput.current);
-    console.log("Games Won:", gamesWon.current);
-
-    fetch('http://localhost:8000/', {
+    fetch(serverURL, {
       method: 'POST',
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -430,7 +421,8 @@ function App() {
       <div className='hintContainer'>
         <div className='hintButton'>
         <p className='definitionHint'>{hint}</p>
-        {guessesRemaining === 1 && <button onClick={handleGetHint}>Hint</button>}
+          {guessesRemaining === 1 && <button onClick={handleGetHint}>Hint</button>}
+        </div>
       </div>
       
       <div className='keyboardContainer'>
@@ -439,7 +431,6 @@ function App() {
             <button className='keyboardKey' id={key} key={key} onClick={() => letterGuess(key)}>{key}</button>
           )
         })}
-      </div>
       </div>
 
       <div className='computerGameQuit'>

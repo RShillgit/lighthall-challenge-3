@@ -126,6 +126,11 @@ body {
     background-color: lightgray;
 }
 
+.errorMessage {
+    margin-top: 25px;
+}
+
+/*leaderboard*/
 .viewLeaderboard {
     margin-top: 25px;
 }

@@ -309,7 +309,7 @@ function App() {
             <form className='generateLink' onSubmit={urlGenerator}>
               <input className='playerWord' type="text" placeholder='Word' onChange={(e) => wordInput.current = e.target.value.toLowerCase()}/>
               <button className='linkButton'>Generate Link</button>
-              <p className='errorMessage'>{"word does not exists"}</p>
+              <p className='errorMessage'>{"Word cannot be found"}</p>
             </form>
           </div>
         )

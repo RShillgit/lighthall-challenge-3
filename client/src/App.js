@@ -49,6 +49,7 @@ function App() {
   const nooseLogo = noose;
 
   const serverURL = 'lighthall-challenge-3-production-server.up.railway.app'; // Change to http://localhost:8000 in development
+  const clientURL = 'https://lighthall-challenge-3-production.up.railway.app/' // Change to http://localhost:3000 in development
 
   // On mount 
   useEffect(() => {
@@ -259,7 +260,7 @@ function App() {
         // Encrypt word
         const encryptedWord = CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(wordInput.current));
         
-        const playerURL = `http://localhost:3000/?word=${encryptedWord}`
+        const playerURL = `${clientURL}/?word=${encryptedWord}`
         
         // Display URL with encrypted word 
         setWordInputScreen(

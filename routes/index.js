@@ -17,6 +17,23 @@ router.get('/', function(req, res, next) {
   }
 });
 
+// Get leaderboard data
+router.get('/leaderboard', (req, res, next) => {
+
+  highScore.find({})
+  .sort({gamesWon: -1})
+  .limit(10)
+
+  // Successfully got top high scores
+  .then(topHighScores => {
+    return res.status(200).json({topHighScores, success: true});
+  })
+  // Unsuccessfully got top high scores
+  .catch(err => {
+    return res.status(500).json({err, success: false});
+  })
+})
+
 /* Create new leaderboard entry */
 router.post('/', (req, res) => {
 

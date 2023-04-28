@@ -92,23 +92,7 @@ function App() {
     else {
 
       // Render start menu display
-      setStartMenu(
-        <div className='startMenu-container'>
-          <div className='startMenuTitle'>
-            <h1>Hangman</h1>
-          </div>
-          <div className='logoContainer'>
-            <img src={nooseLogo} alt='noose logo' width="256" height="256"></img>
-          </div>
-          <div className='startMenu-options'>
-            <button onClick={playAgainstComputer}>Play Against Computer</button>
-            <button onClick={playAgainstPlayer}>Play Against Friend</button>
-          </div>
-          <div className='viewLeaderboard'>
-            <button>High Scores</button>
-          </div>
-        </div>
-      )
+      setStartMenu(startMenuDisplay)
     }
 
   }, [])
@@ -321,6 +305,13 @@ function App() {
   const gameOverFormSubmit = (e) => {
     e.preventDefault();
 
+    // clear all variables
+    setTotalGuesses(0);
+    setCorrectGuesses([]);
+    setGuessesRemaining(8);
+    setHangmanImage(hangmanImages[0]);
+    setHintScreen();
+
     fetch(serverURL, {
       method: 'POST',
       headers: { "Content-Type": "application/json" },
@@ -366,6 +357,20 @@ function App() {
     setLoserScreen(gameOverDisplay);
   }
 
+  // Get and display leaderboard
+  const viewLeaderboard = () => {
+    fetch(`${serverURL}/leaderboard`, {
+      headers: { "Content-Type": "application/json" },
+      mode: 'cors'
+    })
+    .then(res => res.json())
+    .then(data => {
+      setLeaderboardScores(data.topHighScores);
+      setStartMenu();
+    })
+    .catch(err => console.log(err))
+  }
+
   // Rendered Word Display
   const renderedGameWord = (
     <>
@@ -386,6 +391,25 @@ function App() {
         :<></>
       }
     </>
+  )
+
+  // Start menu screen
+  const startMenuDisplay = (
+    <div className='startMenu-container'>
+      <div className='startMenuTitle'>
+        <h1>Hangman</h1>
+      </div>
+      <div className='logoContainer'>
+        <img src={nooseLogo} alt='noose logo' width="256" height="256"></img>
+      </div>
+      <div className='startMenu-options'>
+        <button onClick={playAgainstComputer}>Play Against Computer</button>
+        <button onClick={playAgainstPlayer}>Play Against Friend</button>
+      </div>
+      <div className='viewLeaderboard'>
+        <button onClick={viewLeaderboard}>High Scores</button>
+      </div>
+    </div>
   )
 
   // Game over screen
@@ -473,7 +497,13 @@ function App() {
                   })}
                 </div>
                 <div>
-                  <button className='mainMenuButton' onClick={() => window.location = window.location.pathname}>Main Menu</button>
+                  <button className='mainMenuButton' onClick={
+                    () => {
+                      setLeaderboardScores();
+                      setStartMenu(startMenuDisplay);
+                    }}
+                    >Main Menu
+                  </button>
                 </div>
               </div>
               : <></>

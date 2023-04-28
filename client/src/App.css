@@ -472,3 +472,7 @@ opacity: .25;
 .individualScore p span {
 font-weight: bold;
 }
+
+.leaderboard-MainMenu button {
+    margin-top: 32px;
+}

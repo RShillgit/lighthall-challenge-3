@@ -496,7 +496,7 @@ function App() {
                     )
                   })}
                 </div>
-                <div>
+                <div className='leaderboard-MainMenu'>
                   <button className='mainMenuButton' onClick={
                     () => {
                       setLeaderboardScores();

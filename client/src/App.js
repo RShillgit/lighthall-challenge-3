@@ -218,6 +218,16 @@ function App() {
     const response = await fetch(`https://www.dictionaryapi.com/api/v3/references/collegiate/json/${word}?key=8be9f87e-3ee9-4572-8416-8cebdc1cfd92`);
     const data = await response.json();
     if (Array.isArray(data) && data.length > 0) {
+      return data[0].shortdef.join('\n');
+    } else {
+      throw new Error('Word not found in the dictionary.');
+    }
+  }
+
+  async function checkWord(word) {
+    const response = await fetch(`https://www.dictionaryapi.com/api/v3/references/collegiate/json/${word}?key=8be9f87e-3ee9-4572-8416-8cebdc1cfd92`);
+    const data = await response.json();
+    if (Array.isArray(data) && data.length > 0) {
       return;
     } else {
       throw new Error('Word not found in the dictionary.');
@@ -252,7 +262,7 @@ function App() {
     } else {
       try {
         // Check if word exists in dictionary
-        const definition = await getDefinition(wordInput.current);
+        const definition = await checkWord(wordInput.current);
         // Encrypt word
         const encryptedWord = CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(wordInput.current));
         
@@ -262,7 +272,7 @@ function App() {
         setWordInputScreen(
           <div className='generatedLinkContainer'>
             <input className='generatedLink' type="text" value={playerURL} readOnly={true}/>
-            <CopyToClipboard>
+            <CopyToClipboard text={playerURL}>
               <button className='linkCopyButton'>Copy</button>
             </CopyToClipboard>
             

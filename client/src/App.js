@@ -224,16 +224,6 @@ function App() {
     }
   }
 
-  async function checkWord(word) {
-    const response = await fetch(`https://www.dictionaryapi.com/api/v3/references/collegiate/json/${word}?key=8be9f87e-3ee9-4572-8416-8cebdc1cfd92`);
-    const data = await response.json();
-    if (Array.isArray(data) && data.length > 0) {
-      return;
-    } else {
-      throw new Error('Word not found in the dictionary.');
-    }
-  }
-
 
   //get hint
   const handleGetHint = async () => {
@@ -262,7 +252,7 @@ function App() {
     } else {
       try {
         // Check if word exists in dictionary
-        const definition = await checkWord(wordInput.current);
+        const definition = await getDefinition(wordInput.current);
         // Encrypt word
         const encryptedWord = CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(wordInput.current));
         
@@ -271,40 +261,44 @@ function App() {
         // Display URL with encrypted word 
         setWordInputScreen(
           <div className='generatedLinkContainer'>
+          <div>
             <input className='generatedLink' type="text" value={playerURL} readOnly={true}/>
-            <CopyToClipboard text={playerURL}>
-              <button className='linkCopyButton'>Copy</button>
-            </CopyToClipboard>
+              <CopyToClipboard text={playerURL}>
+                <button className='linkCopyButton'>Copy</button>
+              </CopyToClipboard>
+              
+    
+              <EmailShareButton
+                className='emailButton'
+                url={playerURL}
+                quote={'Play Hangman with me!'}
+                hashtag="#hangman"
+              >
+                <EmailIcon size={64} round />
+              </EmailShareButton>
+    
+              <FacebookShareButton
+                className='facebookButton'
+                url={playerURL}
+                quote={'Play Hangman with me!'}
+                hashtag="#hangman"
+              >
+                <FacebookIcon size={64} round />
+              </FacebookShareButton>
+    
+              <TwitterShareButton
+                className='twitterButton'
+                url={playerURL}
+                quote={'Play Hangman with me!'}
+                hashtag="#hangman"
+              >
+                <TwitterIcon size={64} round />
+              </TwitterShareButton>
+            </div>
             
-  
-            <EmailShareButton
-              className='emailButton'
-              url={playerURL}
-              quote={'Play Hangman with me!'}
-              hashtag="#hangman"
-            >
-              <EmailIcon size={64} round />
-            </EmailShareButton>
-  
-            <FacebookShareButton
-              className='facebookButton'
-              url={playerURL}
-              quote={'Play Hangman with me!'}
-              hashtag="#hangman"
-            >
-              <FacebookIcon size={64} round />
-            </FacebookShareButton>
-  
-            <TwitterShareButton
-              className='twitterButton'
-              url={playerURL}
-              quote={'Play Hangman with me!'}
-              hashtag="#hangman"
-            >
-              <TwitterIcon size={64} round />
-            </TwitterShareButton>
-  
-            <p className='definition'>{definition}</p>
+            <div>
+            <button className='mainMenuButton' onClick={() => window.location = window.location.pathname}>Main Menu</button>
+          </div>
           </div>
         );
       } catch (error) {

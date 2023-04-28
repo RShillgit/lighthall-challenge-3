@@ -180,7 +180,7 @@ function App() {
     setWordInputScreen(
       <div className='formContainer'>
         <form className='generateLink' onSubmit={urlGenerator}>
-          <input className='playerWord' type="text" placeholder='Word' onChange={(e) => wordInput.current = e.target.value.toLowerCase()}/>
+          <input className='playerWord' type="text" placeholder='Word' onChange={(e) => wordInput.current = e.target.value.toLowerCase()} required={true}/>
           <button className='linkButton'>Generate Link</button>
         </form>
       </div>
@@ -350,6 +350,7 @@ function App() {
     setCorrectGuesses([]);
     setGuessesRemaining(8);
     setHangmanImage(hangmanImages[0]);
+    setHintScreen();
 
     // Set keys back to normal
     const allKeys = document.querySelectorAll('.keyboardKey');

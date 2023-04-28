@@ -49,7 +49,7 @@ function App() {
   const nooseLogo = noose;
 
   const serverURL = 'lighthall-challenge-3-production-server.up.railway.app'; // Change to http://localhost:8000 in development
-  const clientURL = 'https://lighthall-challenge-3-production.up.railway.app/' // Change to http://localhost:3000 in development
+  const clientURL = 'https://lighthall-challenge-3-production.up.railway.app' // Change to http://localhost:3000 in development
 
   // On mount 
   useEffect(() => {

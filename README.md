@@ -1,9 +1,7 @@
-# lighthall-challenge-3
+# Hangman
+Lighthall internship challenge 3 - group project 2
 
-## Running the backend
-If you are on Mac/Linux run "npm run serverstart" to start the backend and naviagte to localhost:8000 in your web browser.
-
-If you are on windows go into package.json and change the ' "serverstart": "DEBUG=lighthall-challenge-2:* npm run devstart" ' command to ' "serverstart": "SET DEBUG=lighthall-challenge-2:* & npm start" ' Once this command is set, run "npm run serverstart" and navigate to localhost:8000 in your web browser
-
-## Running the frontend
-Open a new terminal and change directories to the client folder using with this command: "cd client" Once in the client folder run "npm start"
+## Guidelines
+1. Design a gameplay where the player can play against the computer with a random set of words
+2. Dusokay a leaderboard(stored on server side)
+3. Ability for the user to set the word for a single session and give the link to somebody else to play it

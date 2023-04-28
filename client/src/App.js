@@ -48,7 +48,7 @@ function App() {
   const [hangmanImage, setHangmanImage] = useState(hangmanImages[0]);
   const nooseLogo = noose;
 
-  const serverURL = 'http://localhost:8000';
+  const serverURL = 'lighthall-challenge-3-production-server.up.railway.app'; // Change to http://localhost:8000 in development
 
   // On mount 
   useEffect(() => {

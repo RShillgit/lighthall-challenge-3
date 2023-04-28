@@ -126,6 +126,27 @@ body {
     background-color: lightgray;
 }
 
+.viewLeaderboard {
+    margin-top: 25px;
+}
+
+.viewLeaderboard button {
+    background-color: darkgray;
+    padding: 1rem 4rem;
+    font-size: x-large;
+    border-radius: 0.5rem;
+    border: black solid 2px;
+}
+.viewLeaderboard button:hover {
+    cursor: pointer;
+    transform: translateY(-4px);
+    transition: transform 0.3s ease 0s;
+    box-shadow: 0px 5px 5px black;
+}
+.viewLeaderboard button:active {
+    background-color: lightgray;
+}
+
 .generatedLinkContainer {
     position: absolute;
     top: 0;

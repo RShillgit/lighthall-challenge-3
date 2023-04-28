@@ -103,6 +103,9 @@ function App() {
             <button onClick={playAgainstComputer}>Play Against Computer</button>
             <button onClick={playAgainstPlayer}>Play Against Friend</button>
           </div>
+          <div className='viewLeaderboard'>
+            <button>High Scores</button>
+          </div>
         </div>
       )
     }
